@@ -17,8 +17,6 @@ android {
 
     }
 
-
-
     buildTypes {
         release {
             isMinifyEnabled = false
@@ -28,43 +26,34 @@ android {
             )
         }
     }
+
+    androidResources {
+        noCompress += "tflite"
+    }
+
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
     }
+
     kotlinOptions {
         jvmTarget = "11"
     }
+
     buildFeatures {
         buildConfig = true
+        compose = true
     }
+
     packaging {
         resources {
             excludes += setOf("/META-INF/{AL2.0,LGPL2.1}")
 
         }
-        androidResources {
-            noCompress += "tflite"
-        }
     }
 }
 
 dependencies {
-
-
-
-    // GPU Acceleration (optional)
-    implementation("com.google.ai.edge.litert:litert-api:1.2.0")
-
-    // Si usas operaciones avanzadas como GRU/RNN
-    implementation("com.google.ai.edge.litert:litert-gpu:1.2.0")
-
-    // (Opcional) Si usas aceleración por GPU
-
-    implementation("com.google.ai.edge.litert:litert-support:1.2.0")
-    implementation("org.tensorflow:tensorflow-lite-select-tf-ops:2.14.0")
-
-
 
     implementation(libs.play.services.wearable)
     implementation(platform(libs.compose.bom))
@@ -76,6 +65,14 @@ dependencies {
     implementation(libs.wear.tooling.preview)
     implementation(libs.activity.compose)
     implementation(libs.core.splashscreen)
+    implementation(libs.runtime.livedata)
+    implementation(libs.material3.android)
+
+    implementation(libs.tensorflow.lite)
+    implementation(libs.tensorflow.lite.support)
+    implementation(libs.tensorflow.lite.select.tf.ops)
+    implementation (libs.tensorflow.lite.gpu)
+
     androidTestImplementation(platform(libs.compose.bom))
     androidTestImplementation(libs.ui.test.junit4)
     debugImplementation(libs.ui.tooling)
