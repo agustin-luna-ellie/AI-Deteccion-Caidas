@@ -1,6 +1,7 @@
 package io.fallcare.core
 
 
+import android.app.NotificationManager
 import android.app.Service
 import android.content.BroadcastReceiver
 import android.content.Context
@@ -97,7 +98,7 @@ class FallDetectionService : Service(), SensorEventListener {
     override fun onCreate() {
         super.onCreate()
         val notification = createForegroundNotification()
-        InstallReceiver()
+        installReceiver()
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE)
             startForeground(
                 NOTIFICATION_ID,
@@ -320,7 +321,7 @@ class FallDetectionService : Service(), SensorEventListener {
         }
     }
 
-    private fun InstallReceiver() {
+    private fun installReceiver() {
         when (Build.VERSION.SDK_INT) {
             Build.VERSION_CODES.TIRAMISU ->
                 registerReceiver(
@@ -339,6 +340,7 @@ class FallDetectionService : Service(), SensorEventListener {
             else -> registerReceiver(settingsReceiver, IntentFilter(ACTION_UPDATE_SETTINGS))
         }
     }
+
 
     private fun showFallAlertNotification() {
 
