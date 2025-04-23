@@ -94,7 +94,7 @@ class FallDetectionService : Service(), SensorEventListener {
     override fun onCreate() {
         super.onCreate()
         val notification = createForegroundNotification()
-        registerReceiver(settingsReceiver, IntentFilter(ACTION_UPDATE_SETTINGS))
+        InstallReceiver()
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE)
             startForeground(
                 NOTIFICATION_ID,
@@ -313,6 +313,26 @@ class FallDetectionService : Service(), SensorEventListener {
         fun startService(context: Context) {
             val intent = Intent(context, FallDetectionService::class.java)
             startForegroundService(context, intent)
+        }
+    }
+
+    private fun InstallReceiver() {
+        when (Build.VERSION.SDK_INT) {
+            Build.VERSION_CODES.TIRAMISU ->
+                registerReceiver(
+                    settingsReceiver,
+                    IntentFilter(ACTION_UPDATE_SETTINGS),
+                    RECEIVER_NOT_EXPORTED
+                )
+
+            Build.VERSION_CODES.UPSIDE_DOWN_CAKE ->
+                registerReceiver(
+                    settingsReceiver,
+                    IntentFilter(ACTION_UPDATE_SETTINGS),
+                    RECEIVER_EXPORTED
+                )
+
+            else -> registerReceiver(settingsReceiver, IntentFilter(ACTION_UPDATE_SETTINGS))
         }
     }
 
