@@ -20,6 +20,5 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "PruebaRed"
+rootProject.name = "fallcare"
 include(":app")
- 

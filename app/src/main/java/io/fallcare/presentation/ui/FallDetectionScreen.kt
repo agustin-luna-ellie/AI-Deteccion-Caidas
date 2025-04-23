@@ -1,14 +1,13 @@
-package com.example.pruebared.presentation.ui
+package io.fallcare.presentation.ui
 
+import android.content.Context
 import androidx.compose.ui.graphics.Color
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.scaleIn
 import androidx.compose.animation.scaleOut
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
@@ -33,67 +32,50 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.wear.compose.foundation.lazy.rememberScalingLazyListState
-import androidx.wear.compose.material.PositionIndicator
-import androidx.wear.compose.material.Scaffold
-import androidx.wear.compose.material.Vignette
-import androidx.wear.compose.material.VignettePosition
-import com.example.pruebared.presentation.FallDetectionViewModel
+import com.fallcare.ui.theme.CoralPink
+import io.fallcare.R
+import io.fallcare.presentation.FallDetectionViewModel
 
 @Composable
-fun FallDetectionScreen(viewModel: FallDetectionViewModel) {
+fun FallDetectionScreen(
+    context: Context,
+    viewModel: FallDetectionViewModel
+) {
 
     var showSettings by remember { mutableStateOf(false) }
-    val scrollState = rememberScalingLazyListState()
 
-    Scaffold(
-        positionIndicator = {
-            PositionIndicator(
-                scalingLazyListState = scrollState,
-                modifier = Modifier.fillMaxSize()
-            )
-        },
-        vignette = {
-            Vignette(vignettePosition = VignettePosition.TopAndBottom)
-        }
-    ) {
+    AeroBackgroundScreen(imageRes = R.drawable.aero_mint_green) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center,
-            modifier = Modifier
-                .background(Color.LightGray)
-                .fillMaxSize()
+            verticalArrangement = Arrangement.Top,
+            modifier = Modifier.fillMaxSize()
         ) {
             // Botón de ajustes
-            Box(modifier = Modifier.fillMaxWidth(.9f)) {
-                IconButton(
-                    onClick = { showSettings = true },
-                    modifier = Modifier
-                        .align(Alignment.TopEnd)
-                        .padding(4.dp)
-                ) {
-                    Icon(
-                        imageVector = Icons.Default.Settings,
-                        contentDescription = "Configuración"
-                    )
-                }
-
-                // Contenido principal
-                MainContent(viewModel)
+            IconButton(
+                modifier = Modifier.fillMaxHeight(.2f),
+                onClick = { showSettings = true },
+            ) {
+                Icon(
+                    imageVector = Icons.Default.Settings,
+                    contentDescription = "Configuración"
+                )
             }
+
+            // Contenido principal
+            MainContent(viewModel)
         }
     }
 
     // Mostrar pantalla de configuración
     if (showSettings) {
         AlertDialog(
+            modifier = Modifier.fillMaxHeight(),
             onDismissRequest = { showSettings = false },
             confirmButton = {},
             dismissButton = {},
-            //title = { Text("Configuracións") },
             text = {
                 SettingsScreen(
-                    viewModel = viewModel,
+                    context = context,
                     onBack = { showSettings = false }
                 )
             }
@@ -107,19 +89,22 @@ private fun MainContent(viewModel: FallDetectionViewModel) {
     val y by viewModel.y.observeAsState(0f)
     val z by viewModel.z.observeAsState(0f)
     val fallDetected by viewModel.fallDetected.observeAsState(false)
-    val status by viewModel.statusMessage.observeAsState("...")
+    val statusMessage by viewModel.statusMessage.observeAsState("")
 
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center,
         modifier = Modifier
-            .fillMaxWidth(.7f)
-            .fillMaxHeight(.7f)
+            .padding(bottom = 24.dp)
+            .fillMaxWidth(.8f)
             .verticalScroll(rememberScrollState())
     ) {
-        Text(text = "Estado: \n$status", fontSize = 10.sp)
-        AxisCard("X", x, color = MaterialTheme.colorScheme.primary)
-        AxisCard("Y", y, color = MaterialTheme.colorScheme.secondary)
-        AxisCard("Z", z, color = MaterialTheme.colorScheme.tertiary)
+
+        AccelerometerBarChart(x = x, y = y, z = z)
+
+        GlassCard(title = "Status", color = CoralPink, content = {
+            Text(statusMessage, style = MaterialTheme.typography.bodySmall, color = Color.Black)
+        })
 
         AnimatedVisibility(
             modifier = Modifier.fillMaxWidth(.9f),

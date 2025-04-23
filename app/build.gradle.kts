@@ -2,14 +2,15 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
+    alias(libs.plugins.google.services)
 }
 
 android {
-    namespace = "com.example.pruebared"
+    namespace = "io.fallcare"
     compileSdk = 35
 
     defaultConfig {
-        applicationId = "com.example.pruebared"
+        applicationId = "io.fallcare"
         minSdk = 30
         targetSdk = 35
         versionCode = 1
@@ -19,7 +20,7 @@ android {
 
     buildTypes {
         release {
-            isMinifyEnabled = false
+            isMinifyEnabled = true
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
@@ -55,28 +56,60 @@ android {
 
 dependencies {
 
+    // Wear OS
+    implementation (libs.wear)
+    implementation (libs.wear.ongoing)
+    implementation(libs.wear.tooling.preview)
+    implementation(libs.watchface.complications.data.source.ktx)
+    implementation(libs.watchface)
+
     implementation(libs.play.services.wearable)
+
+
+    // compose
     implementation(platform(libs.compose.bom))
-    implementation(libs.ui)
-    implementation(libs.ui.graphics)
-    implementation(libs.ui.tooling.preview)
     implementation(libs.compose.material)
     implementation(libs.compose.foundation)
-    implementation(libs.wear.tooling.preview)
     implementation(libs.activity.compose)
+    androidTestImplementation(platform(libs.compose.bom))
+
     implementation(libs.core.splashscreen)
     implementation(libs.runtime.livedata)
     implementation(libs.material3.android)
 
+    // tensorflow
     implementation(libs.tensorflow.lite)
     implementation(libs.tensorflow.lite.support)
     implementation(libs.tensorflow.lite.select.tf.ops)
-    implementation (libs.tensorflow.lite.gpu)
+    implementation(libs.tensorflow.lite.gpu)
 
-    androidTestImplementation(platform(libs.compose.bom))
+    implementation(libs.lifecycle.service)
+    implementation(libs.lifecycle.livedata.ktx)
+
+    // UI
+    implementation(libs.ui)
+    implementation(libs.ui.graphics)
+    implementation(libs.ui.tooling.preview)
+
     androidTestImplementation(libs.ui.test.junit4)
     debugImplementation(libs.ui.tooling)
     debugImplementation(libs.ui.test.manifest)
+
+    implementation(libs.tiles)
+    implementation(libs.tiles.material)
+    implementation(libs.horologist.compose.tools)
+    implementation(libs.horologist.tiles)
+    implementation(libs.horologist.composables)
+    implementation(libs.accompanist.permissions)
+
+    implementation (libs.mpandroidchart)
+
+    implementation (libs.datastore.preferences)
+    implementation(libs.datastore.core.android)
+
+    // Firebase
+    //implementation (libs.firebase.crashlytics.ktx) // Crashlytics
+    implementation (libs.firebase.firestore.ktx) // Firestore
 
 }
 

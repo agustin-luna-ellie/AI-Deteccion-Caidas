@@ -1,10 +1,10 @@
-package com.example.pruebared.presentation.theme
+package io.fallcare.presentation.theme
 
 import androidx.compose.runtime.Composable
 import androidx.wear.compose.material.MaterialTheme
 
 @Composable
-fun PruebaRedTheme(
+fun FallCareTheme(
     content: @Composable () -> Unit
 ) {
     /**

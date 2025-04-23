@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "938760659457",
+    "project_id": "fallcare-dev",
+    "storage_bucket": "fallcare-dev.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:938760659457:android:6efd76425273332bcfd600",
+        "android_client_info": {
+          "package_name": "io.fallcare"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDetcEK59kBUcCEgNXMF1ryOqzpJwexrSA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,4 +1,4 @@
-package com.example.pruebared.presentation.ui
+package io.fallcare.presentation.ui
 
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.layout.Arrangement

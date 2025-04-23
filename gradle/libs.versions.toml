@@ -1,6 +1,11 @@
 [versions]
 agp = "8.7.3"
+datastorePreferences = "1.1.4"
+firebaseCrashlyticsKtx = "19.4.2"
+firebaseFirestoreKtx = "25.1.3"
 kotlin = "2.0.21"
+lifecycleService = "2.8.7"
+mpandroidchart = "v3.1.0"
 playServicesWearable = "19.0.0"
 composeBom = "2025.04.00"
 composeMaterial = "1.4.1"
@@ -8,14 +13,36 @@ composeFoundation = "1.4.1"
 tensorflowLite = "2.13.0"  # Updated from 2.14.0
 tensorflowLiteGpu = "2.10.0"
 tensorflowLiteSupport = "0.4.4"  # Updated from 0.4.2
+watchface = "1.2.1"
+watchfaceComplicationsDataSourceKtx = "1.2.1"
+wear = "1.3.0"
+
 wearToolingPreview = "1.0.0"
 activityCompose = "1.10.1"
 coreSplashscreen = "1.0.1"
 runtimeLivedata = "1.7.8"
 material3Android = "1.3.2"
 
+tiles = "1.1.0"
+tilesMaterial = "1.1.0"
+horologistComposeTools = "0.4.8"
+horologistTiles = "0.4.8"
+horologistComposables = "0.6.17"
+#accompanistPermissions = "0.31.1-alpha"
+accompanistPermissions = "0.30.1"
+wearOngoing = "1.0.0"
+googleServices = "4.4.2"
+datastoreCoreAndroid = "1.1.4"
+
+
 [libraries]
 # TensorFlow Lite Libraries
+datastore-preferences = { module = "androidx.datastore:datastore-preferences", version.ref = "datastorePreferences" }
+firebase-crashlytics-ktx = { module = "com.google.firebase:firebase-crashlytics-ktx", version.ref = "firebaseCrashlyticsKtx" }
+firebase-firestore-ktx = { module = "com.google.firebase:firebase-firestore-ktx", version.ref = "firebaseFirestoreKtx" }
+lifecycle-livedata-ktx = { module = "androidx.lifecycle:lifecycle-livedata-ktx", version.ref = "lifecycleService" }
+lifecycle-service = { module = "androidx.lifecycle:lifecycle-service", version.ref = "lifecycleService" }
+mpandroidchart = { module = "com.github.PhilJay:MPAndroidChart", version.ref = "mpandroidchart" }
 tensorflow-lite = { module = "org.tensorflow:tensorflow-lite", version.ref = "tensorflowLite" }
 tensorflow-lite-gpu = { module = "org.tensorflow:tensorflow-lite-gpu", version.ref = "tensorflowLiteGpu" }
 tensorflow-lite-select-tf-ops = { module = "org.tensorflow:tensorflow-lite-select-tf-ops", version.ref = "tensorflowLite" }
@@ -32,13 +59,27 @@ ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-manifest" }
 ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit4" }
 compose-material = { group = "androidx.wear.compose", name = "compose-material", version.ref = "composeMaterial" }
 compose-foundation = { group = "androidx.wear.compose", name = "compose-foundation", version.ref = "composeFoundation" }
+watchface = { module = "androidx.wear.watchface:watchface", version.ref = "watchface" }
+watchface-complications-data-source-ktx = { module = "androidx.wear.watchface:watchface-complications-data-source-ktx", version.ref = "watchfaceComplicationsDataSourceKtx" }
+wear = { module = "androidx.wear:wear", version.ref = "wear" }
 wear-tooling-preview = { group = "androidx.wear", name = "wear-tooling-preview", version.ref = "wearToolingPreview" }
 activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "activityCompose" }
 core-splashscreen = { group = "androidx.core", name = "core-splashscreen", version.ref = "coreSplashscreen" }
 runtime-livedata = { group = "androidx.compose.runtime", name = "runtime-livedata", version.ref = "runtimeLivedata" }
 material3-android = { group = "androidx.compose.material3", name = "material3-android", version.ref = "material3Android" }
+tiles = { group = "androidx.wear.tiles", name = "tiles", version.ref = "tiles" }
+tiles-material = { group = "androidx.wear.tiles", name = "tiles-material", version.ref = "tilesMaterial" }
+horologist-compose-tools = { group = "com.google.android.horologist", name = "horologist-compose-tools", version.ref = "horologistComposeTools" }
+horologist-tiles = { group = "com.google.android.horologist", name = "horologist-tiles", version.ref = "horologistTiles" }
+wear-ongoing = { module = "androidx.wear:wear-ongoing", version.ref = "wearOngoing" }
+horologist-composables = { module = "com.google.android.horologist:horologist-composables", version.ref = "horologistComposables" }
+accompanist-permissions = { module = "com.google.accompanist:accompanist-permissions", version.ref = "accompanistPermissions" }
+datastore-core-android = { group = "androidx.datastore", name = "datastore-core-android", version.ref = "datastoreCoreAndroid" }
+
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
+google-services = { id = "com.google.gms.google-services", version.ref = "googleServices" }
+
