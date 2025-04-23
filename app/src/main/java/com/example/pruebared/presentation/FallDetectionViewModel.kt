@@ -40,6 +40,7 @@ class FallDetectionViewModel(application: Application) :
     private var bufferIndex = 0
     private var lastFallTime = 0L
 
+
     // Variables de configuración
     var sequenceLength by mutableIntStateOf(40)
         private set
@@ -64,6 +65,9 @@ class FallDetectionViewModel(application: Application) :
 
     private val _statusMessage = MutableLiveData("Cargando modelo...")
     val statusMessage: LiveData<String> = _statusMessage
+
+    private val _fallProbability = MutableLiveData(0f)
+    val fallProbability: LiveData<Float> = _fallProbability
 
 
     init {
@@ -104,35 +108,48 @@ class FallDetectionViewModel(application: Application) :
                     return@launch
                 }
 
-                val options = Interpreter.Options().apply {
-                    numThreads = 1
-                    useNNAPI = true
-                }
+                // Temporary interpreter to test NNAPI
+                val inputDummy = Array(1) { Array(sequenceLength) { FloatArray(3) } }
+                val outputDummy = Array(1) { FloatArray(2) }
 
                 try {
-                    // Verificación adicional del modelo
-                    val tflite = Interpreter(modelBuffer, options)
+                    val nnapiOptions = Interpreter.Options().apply {
+                        numThreads = 1
+                        useNNAPI = true
+                    }
 
-                    // Prueba de compatibilidad
-                    val inputTensor = tflite.getInputTensor(0)
-                    val outputTensor = tflite.getOutputTensor(0)
+                    val nnapiInterpreter = Interpreter(modelBuffer, nnapiOptions)
 
-                    Log.d("ModelInfo", "Input shape: ${inputTensor.shape().contentToString()}")
-                    Log.d("ModelInfo", "Output shape: ${outputTensor.shape().contentToString()}")
+                    // 🧪 Try dummy inference to confirm NNAPI compatibility
+                    nnapiInterpreter.run(inputDummy, outputDummy)
 
-                    this@FallDetectionViewModel.tflite = tflite
+                    // ✅ Success with NNAPI
+                    this@FallDetectionViewModel.tflite = nnapiInterpreter
                     modelReady = true
-                    _statusMessage.postValue("✔ Modelo cargado correctamente")
-                } catch (e: IllegalStateException) {
-                    _statusMessage.postValue("❌ Modelo incompatible: ${e.message}")
-                } catch (e: IllegalArgumentException) {
-                    _statusMessage.postValue("❌ Error en modelo: ${e.message}")
-                    Log.d("IllegalArgumentException", "Error en modelo: ${e.message}")
+                    _statusMessage.postValue("✔ Modelo cargado con NNAPI")
+
+                } catch (e: Exception) {
+                    Log.w(tag, "❌ NNAPI incompatible, fallback to CPU: ${e.message}")
+
+                    val cpuOptions = Interpreter.Options().apply {
+                        numThreads = 1
+                        useNNAPI = false
+                    }
+
+                    val cpuInterpreter = Interpreter(modelBuffer, cpuOptions)
+                    cpuInterpreter.run(inputDummy, outputDummy) // Validate once
+
+                    this@FallDetectionViewModel.tflite = cpuInterpreter
+                    modelReady = true
+                    _statusMessage.postValue("⚠️ Cargado sin NNAPI (modo CPU)")
                 }
+
             } catch (e: Exception) {
                 _statusMessage.postValue("❌ Error inesperado: ${e.message}")
             }
         }
+
+
 
     }
 
@@ -168,6 +185,9 @@ class FallDetectionViewModel(application: Application) :
                             val output = Array(1) { FloatArray(2) }
                             tflite.run(input, output)
                             val probFall = output[0][1]
+
+                            _fallProbability.postValue(probFall)
+
                             val now = System.currentTimeMillis()
 
                             if (probFall > 0.5 && now - lastFallTime > 2000) {

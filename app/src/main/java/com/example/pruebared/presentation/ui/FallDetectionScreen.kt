@@ -107,6 +107,7 @@ private fun MainContent(viewModel: FallDetectionViewModel) {
     val y by viewModel.y.observeAsState(0f)
     val z by viewModel.z.observeAsState(0f)
     val fallDetected by viewModel.fallDetected.observeAsState(false)
+    val fallProbability by viewModel.fallProbability.observeAsState(0f)
     val status by viewModel.statusMessage.observeAsState("...")
 
     Column(
@@ -120,6 +121,15 @@ private fun MainContent(viewModel: FallDetectionViewModel) {
         AxisCard("X", x, color = MaterialTheme.colorScheme.primary)
         AxisCard("Y", y, color = MaterialTheme.colorScheme.secondary)
         AxisCard("Z", z, color = MaterialTheme.colorScheme.tertiary)
+
+
+        Text(
+            text = "Probabilidad: ${"%.1f".format(fallProbability * 100)}%",
+            fontSize = 12.sp,
+            color = if (fallProbability > 0.5) MaterialTheme.colorScheme.error
+            else MaterialTheme.colorScheme.onBackground,
+            modifier = Modifier.padding(top = 8.dp)
+        )
 
         AnimatedVisibility(
             modifier = Modifier.fillMaxWidth(.9f),
