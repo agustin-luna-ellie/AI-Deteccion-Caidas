@@ -7,6 +7,7 @@ import android.content.Intent
 import android.content.ServiceConnection
 import android.os.Bundle
 import android.os.IBinder
+import android.view.WindowManager
 import androidx.activity.ComponentActivity
 import androidx.activity.viewModels
 import androidx.activity.compose.setContent
@@ -69,6 +70,12 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         createNotificationChannel()
+        // Opcional: Wake lock o flags para asegurar visibilidad
+        window.addFlags(
+            WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON or
+                    WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON or
+                    WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED
+        )
 
         val data = intent.extras?.getBoolean(FALL_DETECTED_DATA)
         logger("MainActivity", "appTimeStamp: $appTimeStamp, FALL_DETECTED_DATA: $data")

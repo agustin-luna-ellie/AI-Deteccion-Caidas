@@ -10,6 +10,8 @@
     <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
     <uses-permission android:name="android.permission.USE_EXACT_ALARM" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.USE_FULL_SCREEN_INTENT" />
+
     <uses-permission
         android:name="android.permission.HIGH_SAMPLING_RATE_SENSORS"
         android:minSdkVersion="31"
@@ -47,6 +49,8 @@
 
         <activity
             android:name="io.fallcare.presentation.MainActivity"
+            android:showWhenLocked="true"
+            android:turnScreenOn="true"
             android:exported="true"
             android:taskAffinity=""
             android:theme="@style/MainActivityTheme.Starting">
