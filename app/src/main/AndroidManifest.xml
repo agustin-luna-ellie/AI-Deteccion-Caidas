@@ -45,8 +45,6 @@
             android:permission="android.permission.FOREGROUND_SERVICE"
             tools:ignore="ForegroundServicePermission" />
 
-        <receiver android:name=".core.FallAlarmReceiver" />
-
         <activity
             android:name="io.fallcare.presentation.MainActivity"
             android:showWhenLocked="true"

@@ -1,7 +1,6 @@
 package io.fallcare.core
 
 
-import android.app.NotificationManager
 import android.app.Service
 import android.content.BroadcastReceiver
 import android.content.Context
@@ -19,11 +18,9 @@ import android.os.Handler
 import android.os.HandlerThread
 import android.os.IBinder
 import android.provider.Settings.System.DEFAULT_ALARM_ALERT_URI
-import androidx.core.app.NotificationCompat
 import androidx.core.content.ContextCompat.startForegroundService
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import io.fallcare.R
 import io.fallcare.data.FallEntity
 import io.fallcare.data.FallModel
 import io.fallcare.data.FireStoreRepository
@@ -36,9 +33,9 @@ import io.fallcare.util.Constants.SETTINGS_KEY
 import io.fallcare.util.androidID
 import io.fallcare.util.appTimeStamp
 import io.fallcare.util.createForegroundNotification
-import io.fallcare.util.getFullScreenIntent
 import io.fallcare.util.loadModelFileMapped
 import io.fallcare.util.logger
+import io.fallcare.util.launchMainActivity
 import io.fallcare.util.verifyModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -164,7 +161,6 @@ class FallDetectionService : Service(), SensorEventListener {
         }
     }
 
-
     // Lógica de detección de caídas
     override fun onSensorChanged(event: SensorEvent) {
 
@@ -172,7 +168,6 @@ class FallDetectionService : Service(), SensorEventListener {
         _sensorData.postValue(Triple(event.values[0], event.values[1], event.values[2]))
 
         if (bufferList.size >= configSequenceLength) {
-
             val internalBuffer = ArrayList(bufferList.map { it.copy() })
             bufferList.clear()
 
@@ -186,9 +181,6 @@ class FallDetectionService : Service(), SensorEventListener {
                         val now = appTimeStamp
 
                         if (probFall > configProbFall && now - lastFallTime > 2000) {
-
-                            showFallAlertNotification()
-                            //abrir Actividad.
                             FireStoreRepository.saveFallData(
                                 androidID, FallEntity(
                                     data = internalBuffer,
@@ -198,6 +190,9 @@ class FallDetectionService : Service(), SensorEventListener {
                                 )
                             )
                             lastFallTime = now
+
+                            //abrir Actividad.
+                            launchMainActivity()
 
                             withContext(Dispatchers.Main) {
                                 MediaPlayer.create(
@@ -342,21 +337,6 @@ class FallDetectionService : Service(), SensorEventListener {
     }
 
 
-    private fun showFallAlertNotification() {
-
-        val notification = NotificationCompat.Builder(this, "notification_channel")
-            .setSmallIcon(R.drawable.ic_fall)
-            .setContentTitle("¡Caída detectada!")
-            .setContentText("Se necesita atención inmediata")
-            .setPriority(NotificationCompat.PRIORITY_HIGH)
-            .setCategory(NotificationCompat.CATEGORY_ALARM)
-            .setFullScreenIntent(getFullScreenIntent(), true)
-            .setAutoCancel(true)
-            .build()
-
-        val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-        notificationManager.notify(NOTIFICATION_ID, notification)
-    }
 
 
 }

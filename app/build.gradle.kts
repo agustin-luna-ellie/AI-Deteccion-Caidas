@@ -58,10 +58,10 @@ dependencies {
 
     // Wear OS
     implementation (libs.wear)
-    implementation (libs.wear.ongoing)
     implementation(libs.wear.tooling.preview)
-    implementation(libs.watchface.complications.data.source.ktx)
-    implementation(libs.watchface)
+    //implementation (libs.wear.ongoing)
+    //implementation(libs.watchface.complications.data.source.ktx)
+    //implementation(libs.watchface)
 
     implementation(libs.play.services.wearable)
 
@@ -95,20 +95,18 @@ dependencies {
     debugImplementation(libs.ui.tooling)
     debugImplementation(libs.ui.test.manifest)
 
-    implementation(libs.tiles)
-    implementation(libs.tiles.material)
-    implementation(libs.horologist.compose.tools)
-    implementation(libs.horologist.tiles)
-    implementation(libs.horologist.composables)
+    //implementation(libs.tiles)
+    //implementation(libs.tiles.material)
+    //implementation(libs.horologist.compose.tools)
+    //implementation(libs.horologist.tiles)
+    //implementation(libs.horologist.composables)
+    //implementation(libs.datastore.core.android)
+
     implementation(libs.accompanist.permissions)
-
     implementation (libs.mpandroidchart)
-
     implementation (libs.datastore.preferences)
-    implementation(libs.datastore.core.android)
 
     // Firebase
-    //implementation (libs.firebase.crashlytics.ktx) // Crashlytics
     implementation (libs.firebase.firestore.ktx) // Firestore
 
 }

@@ -7,7 +7,6 @@ import android.content.Intent
 import android.content.ServiceConnection
 import android.os.Bundle
 import android.os.IBinder
-import android.view.WindowManager
 import androidx.activity.ComponentActivity
 import androidx.activity.viewModels
 import androidx.activity.compose.setContent
@@ -26,14 +25,10 @@ import io.fallcare.presentation.ui.FallDetectionScreen
 import io.fallcare.presentation.ui.PermissionDeniedScreen
 import io.fallcare.util.Constants.FALL_DETECTED_DATA
 import io.fallcare.util.appTimeStamp
-import io.fallcare.util.createNotificationChannel
 import io.fallcare.util.logger
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.isGranted
 import com.google.accompanist.permissions.rememberMultiplePermissionsState
-import io.fallcare.data.FallEntity
-import io.fallcare.data.FireStoreRepository
-import io.fallcare.util.androidID
 
 class MainActivity : ComponentActivity() {
 
@@ -69,13 +64,6 @@ class MainActivity : ComponentActivity() {
     @OptIn(ExperimentalPermissionsApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        createNotificationChannel()
-        // Opcional: Wake lock o flags para asegurar visibilidad
-        window.addFlags(
-            WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON or
-                    WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON or
-                    WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED
-        )
 
         val data = intent.extras?.getBoolean(FALL_DETECTED_DATA)
         logger("MainActivity", "appTimeStamp: $appTimeStamp, FALL_DETECTED_DATA: $data")
